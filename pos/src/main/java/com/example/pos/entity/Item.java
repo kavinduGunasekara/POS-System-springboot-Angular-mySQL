@@ -37,7 +37,7 @@ public class Item {
     private double sellingPrice;
 
     @Column(name = "active_state", columnDefinition = "TINYINT default 1")
-    private boolean active;
+    private boolean activeState;
 
 
 }
