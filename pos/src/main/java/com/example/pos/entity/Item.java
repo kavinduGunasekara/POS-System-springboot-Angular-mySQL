@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -38,6 +39,9 @@ public class Item {
 
     @Column(name = "active_state", columnDefinition = "TINYINT default 1")
     private boolean activeState;
+
+    @OneToMany(mappedBy="items")
+    private Set<OrderDetails> orderDetails;
 
 
 }

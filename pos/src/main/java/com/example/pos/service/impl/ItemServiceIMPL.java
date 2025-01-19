@@ -1,5 +1,6 @@
 package com.example.pos.service.impl;
 
+import com.example.pos.dto.paginated.PaginatedResponseItemDTO;
 import com.example.pos.dto.request.ItemSaveRequestDTO;
 import com.example.pos.dto.response.ItemGetResponseDTO;
 import com.example.pos.entity.Customer;
@@ -13,8 +14,11 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
+import org.springframework.data.domain.Page;
+
 
 import java.util.List;
 
@@ -92,6 +96,43 @@ public class ItemServiceIMPL implements ItemService {
         }else{
             throw new NotFoundException("Item id not active");
         }
+    }
+
+    @Override
+    public PaginatedResponseItemDTO getItemsByActiveStatusWithPaginated(boolean activeStatus, int page, int size) {
+        Page<Item> items = itemRepo.findAllByActiveStateEquals(activeStatus, PageRequest.of(page, size));
+
+        if(items.getSize()<1){
+            throw new NotFoundException("NO Data");
+
+        }
+        PaginatedResponseItemDTO paginatedResponseItemDTO = new PaginatedResponseItemDTO(
+                itemMapper.LisDTOToPage(items),
+                itemRepo.countAllByActiveStateEquals(activeStatus)
+
+
+        );
+
+        return paginatedResponseItemDTO;
+    }
+
+    @Override
+    public PaginatedResponseItemDTO getAllItemsPaginated(int page, int size) {
+        Page<Item>getAllItemsByPaginated= itemRepo.findAll(PageRequest.of(page,size));
+        return new  PaginatedResponseItemDTO(
+                itemMapper.pageToList(getAllItemsByPaginated),
+                itemRepo.count()
+        );
+    }
+
+    @Override
+    public PaginatedResponseItemDTO getAllActiveItemsPaginated(int page, int size, boolean activeState) {
+        Page<Item>getAllActiveItemsByPaginated= itemRepo.findAllByActiveStateEquals(activeState,PageRequest.of(page,size));
+        return new  PaginatedResponseItemDTO(
+                itemMapper.pageToList(getAllActiveItemsByPaginated),
+                itemRepo.countAllByActiveStateEquals(activeState)
+        );
+
     }
 
 }

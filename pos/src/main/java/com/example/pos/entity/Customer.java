@@ -11,6 +11,7 @@ import org.hibernate.annotations.TypeDefs;
 //import org.hibernate.annotations.JdbcTypeCode;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 
 @Entity
@@ -44,6 +45,13 @@ public class Customer {
 
     @Column(name = "active_state", columnDefinition = "TINYINT default 1")
     private boolean active;
+
+
+    @OneToMany(mappedBy="customer")
+    private Set<Order> orders;
+
+
+
 
     public Customer() {    // no args constuctor
 
@@ -117,7 +125,7 @@ public class Customer {
         this.nic = nic;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(boolean activeState) {
         this.active = active;
     }
 

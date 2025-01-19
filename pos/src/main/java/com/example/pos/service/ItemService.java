@@ -1,5 +1,6 @@
 package com.example.pos.service;
 
+import com.example.pos.dto.paginated.PaginatedResponseItemDTO;
 import com.example.pos.dto.request.ItemSaveRequestDTO;
 import com.example.pos.dto.response.ItemGetResponseDTO;
 
@@ -13,4 +14,10 @@ public interface ItemService {
     List<ItemGetResponseDTO> getItemByNameAndStatusByMapstruct(String itemName);
 
     List<ItemGetResponseDTO> getItemsByActiveStatus(boolean activeStatus);
+
+    PaginatedResponseItemDTO getItemsByActiveStatusWithPaginated(boolean activeStatus, int page, int size);
+
+    PaginatedResponseItemDTO getAllItemsPaginated(int page, int size);
+
+    PaginatedResponseItemDTO getAllActiveItemsPaginated(int page, int size, boolean activeState);
 }

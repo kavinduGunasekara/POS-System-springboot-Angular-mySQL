@@ -25,7 +25,7 @@ public class CustomerDTO {
     private String nic;
 
 
-    private boolean active;
+    private boolean activeStatus;
 
     public CustomerDTO() {
 
@@ -38,7 +38,7 @@ public class CustomerDTO {
         this.customer_salary = customer_salary;
         this.contactNumber = contactNumber;
         this.nic = nic;
-        this.active = active;
+        this.activeStatus = active;
     }
 
     public int getCustomerId() {
@@ -90,11 +90,11 @@ public class CustomerDTO {
     }
 
     public boolean isActive() {
-        return active;
+        return activeStatus;
     }
 
     public void setActive(boolean active) {
-        this.active = active;
+        this.activeStatus = active;
     }
 
     @Override
@@ -106,7 +106,7 @@ public class CustomerDTO {
                 ", customer_salary=" + customer_salary +
                 ", contactNumber=" + contactNumber +
                 ", nic='" + nic + '\'' +
-                ", active=" + active +
+                ", active=" + activeStatus +
                 '}';
     }
 }

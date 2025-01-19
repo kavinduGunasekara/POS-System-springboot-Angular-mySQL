@@ -2,6 +2,7 @@ package com.example.pos.controller;
 
 
 import com.example.pos.dto.CustomerDTO;
+import com.example.pos.dto.paginated.PaginatedResponseItemDTO;
 import com.example.pos.dto.request.ItemSaveRequestDTO;
 import com.example.pos.dto.response.ItemGetResponseDTO;
 import com.example.pos.service.ItemService;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @RestController
 @RequestMapping("api/v1/item")
@@ -65,15 +67,64 @@ public class ItemController {
 
     @GetMapping(
             path="/get-by-name-with-status",
-            params = "activeStatus"
+            params = {"activeStatus", "page", "size"}
     )
-    public ResponseEntity<StandardResponse>getItemsByActiveStatus(@RequestParam(value ="activeStatus")boolean activeStatus){
-        List<ItemGetResponseDTO>itemDTOS = itemService.getItemsByActiveStatus(activeStatus);
+    public ResponseEntity<StandardResponse>getItemsByActiveStatus(
+            @RequestParam(value ="activeStatus")boolean activeStatus,
+            @RequestParam(value = "page") int page,
+            @RequestParam(value = "size")int size
+
+            ){
+      //  List<ItemGetResponseDTO>itemDTOS = itemService.getItemsByActiveStatus(activeStatus,page,size);
+        PaginatedResponseItemDTO paginatedResponseItemDTO =itemService.getItemsByActiveStatusWithPaginated(activeStatus,page,size);
         return new ResponseEntity<StandardResponse>(
-                new StandardResponse(200, "Success", itemDTOS),
+                new StandardResponse(200, "Success", paginatedResponseItemDTO),
                 HttpStatus.OK
         );
 
     }
+
+
+    @GetMapping(
+            path="/get-all-items-paginated",
+            params = {"page", "size"}
+    )
+    public ResponseEntity<StandardResponse>getAllItemsPaginated(
+
+            @RequestParam(value = "page") int page,
+            @RequestParam(value = "size")int size
+
+    ){
+        //  List<ItemGetResponseDTO>itemDTOS = itemService.getItemsByActiveStatus(activeStatus,page,size);
+        PaginatedResponseItemDTO paginatedResponseItemDTO =itemService.getAllItemsPaginated(page,size);
+        return new ResponseEntity<StandardResponse>(
+                new StandardResponse(200, "Success", paginatedResponseItemDTO),
+                HttpStatus.OK
+        );
+
+    }
+
+
+    @GetMapping(
+            path="get-all-active-items-paginated",
+            params = {"page", "size", "activeState"}
+    )
+    public ResponseEntity<StandardResponse>getAllActiveItemsPaginated(
+
+            @RequestParam(value = "page") int page,
+            @RequestParam(value = "size")int size,
+            @RequestParam(value = "activeState")boolean activeState
+
+    ){
+        //  List<ItemGetResponseDTO>itemDTOS = itemService.getItemsByActiveStatus(activeStatus,page,size);
+        PaginatedResponseItemDTO paginatedResponseItemDTO =itemService.getAllActiveItemsPaginated(page,size,activeState);
+        return new ResponseEntity<StandardResponse>(
+                new StandardResponse(200, "Success", paginatedResponseItemDTO),
+                HttpStatus.OK
+        );
+
+    }
+
+
 
 }
